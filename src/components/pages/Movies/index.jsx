@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { searchMovies } from 'api/Api';
+import { Link } from 'react-router-dom';
 
 const Movies = () => {
   const [query, setQuery] = useState('');
@@ -21,7 +22,9 @@ const Movies = () => {
       <button onClick={handleSearch}>Search</button>
       <ul>
         {results.map(movie => (
-          <li key={movie.id}>{movie.title}</li>
+          <li key={movie.id}>
+            <Link to={`/movies/${movie.id}`}>{movie.title}</Link>
+          </li>
         ))}
       </ul>
     </div>
