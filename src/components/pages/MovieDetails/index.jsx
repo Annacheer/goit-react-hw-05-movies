@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import { getMovieCredits, getMovieDetails, getMovieReviews } from 'api/Api';
 import Cast from '../Cast';
@@ -8,7 +8,7 @@ import Reviews from '../Reviews';
 const MovieDetails = () => {
   const { movieId } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
+
   const [movie, setMovie] = useState({});
   const [cast, setCast] = useState([]);
   const [reviews, setReviews] = useState([]);
@@ -51,14 +51,7 @@ const MovieDetails = () => {
     : null;
 
   const handleGoBack = () => {
-    if (location.state && location.state.from) {
-      navigate(location.state.from);
-    } else {
-      const defaultPath = location.pathname.includes('/movies')
-        ? '/movies'
-        : '/';
-      navigate(defaultPath);
-    }
+    navigate(-1);
   };
 
   return (
