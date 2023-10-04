@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import { getMovieCredits, getMovieDetails, getMovieReviews } from 'api/Api';
 import Cast from '../Cast';
@@ -14,6 +14,8 @@ const MovieDetails = () => {
   const [reviews, setReviews] = useState([]);
   const [isCastVisible, setIsCastVisible] = useState(false);
   const [areReviewsVisible, setAreReviewsVisible] = useState(false);
+
+  const location = useLocation();
 
   useEffect(() => {
     const fetchData = async () => {
