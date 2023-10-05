@@ -24,6 +24,18 @@ const Movies = () => {
   };
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const results = await searchMovies(query);
+        setSearchResults(results);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     if (query) {
       fetchData();
     }
@@ -33,10 +45,6 @@ const Movies = () => {
     e.preventDefault();
     fetchData();
   };
-
-  //   const handleGoBack = () => {
-  //     navigate(location?.state?.from ?? '/');
-  //   };
 
   return (
     <div>
