@@ -1,44 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import SearchResults from '../SearchResults';
+import { searchMovies } from 'api/Api';
 
-import { Link, useSearchParams } from 'react-router-dom';
+const Movies = () => {
+  const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-const FormSearchProducts = ({ submit }) => {
-  //   const [value, setValue] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
-  const [results, setResults] = useState([]);
-  const query = searchParams.get('search');
+  const query = searchParams.get('search') || '';
 
-  const handleChange = ({ target: { value } }) => {
-    // setValue(value);
-    setSearchParams({ search: value });
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const results = await searchMovies(query);
+      setSearchResults(results);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleSubmit = e => {
+  useEffect(() => {
+    if (query) {
+      fetchData();
+    }
+  }, [query]);
+
+  const handleSearchSubmit = e => {
     e.preventDefault();
-    submit(query);
+    fetchData();
   };
 
-  //   useEffect(() => {
-  //     setSearchParams({ search: 'qwerty' });
-  //   }, [setSearchParams]);
+  //   const handleGoBack = () => {
+  //     navigate(location?.state?.from ?? '/');
+  //   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <h1>Search Movies</h1>
-        <input type="text" value={query} onChange={handleChange} />
-        <button>Search</button>
+    <div>
+      <form onSubmit={handleSearchSubmit}>
+        <div>
+          <h1>Search Movies</h1>
+          <input
+            type="text"
+            value={query}
+            onChange={e => setSearchParams({ search: e.target.value })}
+          />
+          <button type="submit">Search</button>
+        </div>
+      </form>
 
-        <ul>
-          {results.map(movie => (
-            <li key={movie.id}>
-              <Link to={`/movies/${movie.id}`}>{movie.title}</Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </form>
+      {loading && <p>Loading...</p>}
+      {error && <p>Error: {error.message}</p>}
+      {searchResults.length > 0 && <SearchResults results={searchResults} />}
+    </div>
   );
 };
 
-export default FormSearchProducts;
+export default Movies;

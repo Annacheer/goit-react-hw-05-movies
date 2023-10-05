@@ -53,7 +53,7 @@ const MovieDetails = () => {
     : null;
 
   const handleGoBack = () => {
-    navigate(-1);
+    navigate(location?.state?.from ?? '/');
   };
 
   return (
