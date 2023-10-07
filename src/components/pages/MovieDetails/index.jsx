@@ -69,7 +69,15 @@ const MovieDetails = () => {
       <p>{movie.overview}</p>
       <h2>Genres</h2>
       <ul>
-        <p>Additional information</p>
+        {movie.genres ? (
+          movie.genres.map(genre => <li key={genre.id}>{genre.name}</li>)
+        ) : (
+          <li>No genres available</li>
+        )}
+      </ul>
+
+      <p>Additional information</p>
+      <ul>
         <li>
           <Link to="#" onClick={toggleCastVisibility}>
             Cast
