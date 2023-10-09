@@ -11,18 +11,6 @@ const Movies = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('search') || '';
 
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      const results = await searchMovies(query);
-      setSearchResults(results);
-    } catch (error) {
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -43,7 +31,8 @@ const Movies = () => {
 
   const handleSearchSubmit = e => {
     e.preventDefault();
-    fetchData();
+    console.log(e.target);
+    setSearchParams({ search: e.target.elements.query.value });
   };
 
   return (
@@ -53,8 +42,8 @@ const Movies = () => {
           <h1>Search Movies</h1>
           <input
             type="text"
-            value={query}
-            onChange={e => setSearchParams({ search: e.target.value })}
+            // onChange={e => setSearchParams({ search: e.target.value })}
+            name="query"
           />
           <button type="submit">Search</button>
         </div>

@@ -55,7 +55,7 @@ const MovieDetails = () => {
   const handleGoBack = () => {
     navigate(location?.state?.from ?? '/');
   };
-
+  console.log(movie);
   return (
     <div>
       <button onClick={handleGoBack}>Go Back</button>
